@@ -1,3 +1,2 @@
 character = {"name": "kirishima", "age": 18, "pc": "margaret"}
-
-print(character.keys())
+print(character.values())
