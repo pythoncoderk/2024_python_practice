@@ -1,2 +1,3 @@
-l = list(map(float, input().split()))
+n = int(input())
+l = [int(input()) for i in range(n)]
 print(l)
