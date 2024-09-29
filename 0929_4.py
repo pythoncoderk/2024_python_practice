@@ -1,2 +1,2 @@
-l = list(input().split())
+l = list(map(float, input().split()))
 print(l)
