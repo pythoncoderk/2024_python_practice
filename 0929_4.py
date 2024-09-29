@@ -1,5 +1,6 @@
 character = {"name": "kirishima", "age": 18, "pc": "margaret"}
-k, v = input().split()
+k = input()
 
-character[k] = v
+del character[k]
+
 print(character)
