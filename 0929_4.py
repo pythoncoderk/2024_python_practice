@@ -1,4 +1,3 @@
-character = {"name": "kirishima", "age": 18, "pc": "margaret"}
-k = input()
+characters = {("girl", "cute"):"kirishima", ("boy", "cool"):"kaga"}
 
-print(character[k])
+print(characters)
