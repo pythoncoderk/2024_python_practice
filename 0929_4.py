@@ -1,4 +1,4 @@
-character = {"name": "kirishima", "age": 18, "pc": "margaret"}
-k = input()
+n = int(input())
+d = {k: k * 3 for k in range(n)}
 
-print(True if k in character.keys() else False)
+print(d)
