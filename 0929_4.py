@@ -1,3 +1,2 @@
-n = int(input())
-l = [int(input()) for i in range(n)]
-print(l)
+character = {"name":"kirishima", "age":18, "pc":"margaret"}
+print(character)
