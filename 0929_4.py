@@ -1,2 +1,2 @@
-li = [float(x) for x in input().split()]
-print(li)
+l = list(map(float, input().split()))
+print(l)
