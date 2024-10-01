@@ -1,8 +1,10 @@
 # 以下のコードを修正 
-def give_an_honorific(name):
-    return name + "san"
+def give_an_honorific(names):
+    for i in range(len(names)):
+        names[i] += "san"
+    return names
 
 
-name = "kirishima"
-print(give_an_honorific(name))
-print(name)
+names = ["kirishima", "midorikawa"]
+print(give_an_honorific(names))
+print(names)
