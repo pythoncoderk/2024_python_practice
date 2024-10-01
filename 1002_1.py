@@ -1,7 +1,8 @@
 # 以下のコードを修正 
-def check_job(student, teacher="nekosense"):
-    print(f"teacher: {teacher}")
-    print(f"student: {student}")
+def give_an_honorific(name):
+    return name + "san"
 
 
-check_job("kirishima")
+name = "kirishima"
+print(give_an_honorific(name))
+print(name)
