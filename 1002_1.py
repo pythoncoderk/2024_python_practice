@@ -1,6 +1,7 @@
-def check_job(student, teacher):
+# 以下のコードを修正 
+def check_job(student, teacher="nekosense"):
     print(f"teacher: {teacher}")
     print(f"student: {student}")
 
-# 以下のコードを修正
-check_job(teacher="nekosense", student="kirishima")
+
+check_job("kirishima")
