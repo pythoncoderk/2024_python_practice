@@ -1,5 +1,12 @@
+import requests
 from bs4 import BeautifulSoup
 
-soup = BeautifulSoup("<p>Some<b>bad<i>HTML")
-print(soup.prettify())
-print(soup.find(text="bad"))
+url = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/"
+
+req = requests.get(url)
+
+# print(req.text)
+
+soup = BeautifulSoup(req.text, "lxml")
+# print(soup.prettify())
+print(soup.h2)
