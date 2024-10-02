@@ -1,10 +1,8 @@
-# 以下のコードを修正 
-def give_an_honorific(names):
-    for i in range(len(names)):
-        names[i] += "san"
-    return names
+def rec_sum(n):
+    print(n)
+    if n == 0:
+        return 0
+    return n + rec_sum(n - 1)
 
 
-names = ["kirishima", "midorikawa"]
-print(give_an_honorific(names))
-print(names)
+rec_sum(10)
