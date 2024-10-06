@@ -1,3 +1,3 @@
-import testmod
+import testmod as tm
 
-testmod.hello()
+tm.hello()
