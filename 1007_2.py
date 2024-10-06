@@ -1,9 +1,11 @@
-# 掛け算関数を作成してみよう
+# 九九の表を作成してみよう
 
 def multiply(x, y):
-    # この下に処理を記述する
     return x * y
 
-print(multiply(3, 4))
-print(multiply(5, 7))
-print(multiply(12, 34))
+for num in range(1, 10):
+    for j in range(1, 10):
+        if j != 9:
+            print(multiply(num, j), end=", ")
+        else:
+            print(multiply(num, j))
