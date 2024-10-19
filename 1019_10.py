@@ -1,8 +1,8 @@
 n = int(input())
-
 l = [list(map(str, input().split())) for _ in range(n)]
-k = int(input())
+x, y = map(int, input().split())
 
 for i, j in l:
-    if int(j) >= k:
+    if x <= int(j) <= y:
         print(i)
+        
