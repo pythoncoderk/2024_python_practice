@@ -1,0 +1,11 @@
+setup.py
+2024_python_practice.egg-info/PKG-INFO
+2024_python_practice.egg-info/SOURCES.txt
+2024_python_practice.egg-info/dependency_links.txt
+2024_python_practice.egg-info/top_level.txt
+lesson_pakege/__init__.py
+lesson_pakege/talk/__init__.py
+lesson_pakege/talk/amimal.py
+lesson_pakege/talk/human.py
+lesson_pakege/tools/__init__.py
+lesson_pakege/tools/utels.py
