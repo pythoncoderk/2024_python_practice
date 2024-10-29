@@ -1,0 +1,1 @@
+print("test".index("A"))
