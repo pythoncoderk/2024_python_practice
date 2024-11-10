@@ -1,13 +1,12 @@
-class Name:
+class Rev:
     def __init__(self, n, s):
         self.n = n
         self.s = s
 
     def ans(self):
-        for i in range(self.n):
-            print(self.s[i])
+        return self.s[::-1]
 
 n = int(input())
 s = input()
-names = Name(n, s)
-names.ans()
+rev = Rev(n, s)
+print(rev.ans())
