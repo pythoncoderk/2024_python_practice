@@ -1,0 +1,1024 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Pythonウェブスクレイピング</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="dce5e1a9-9fa3-4887-8e95-c68e570b9749" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/nasa_the_blue_marble.jpg" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><img class="icon" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/shot_2020-07-22_23.54.13.png"/></div><h1 class="page-title">Pythonウェブスクレイピング</h1><p class="page-description"></p></header><div class="page-body"><h3 id="4ff3834f-d020-4397-b30b-caa883838e7b" class="">Index</h3><nav id="f519e81a-af41-4302-93e6-127f83d2e82c" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#4ff3834f-d020-4397-b30b-caa883838e7b">Index</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#564ccaee-1e77-49c0-a5c6-9c9f27f0001d">Python環境構築まとめ（How to build various Python envrionments）</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#ece00899-47f7-4695-9bf4-ef8962fd087f">イントロダクション</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#f6ff6d7e-ac77-489d-992d-21db788ebf19">HTML基礎</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#aa704710-bdfb-4dfe-8856-9bc6efa47525">classとid</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#46df333b-2bd5-4000-8da2-a82aee530bfc">HTMLタグ（要素）</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#dc7768f0-09dd-4693-a964-974dfcbf9900">BeautifulSoup</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#28ca539a-893e-4d03-9778-eac4f6e29350">BeautifulSoup ローカルファイルのParse</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d7f8ebc9-8f35-433b-b620-6797aa55bbcc">BeautifulSoup ウェブ上のHTMLのParse</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#0c6254d3-f093-42a5-9c3c-1c2682a14400">様々な要素の選定の方法</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#4153ad3e-67b9-43c4-b7ac-811f5ad78e8b">属性値と要素テキストの取得</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#4f30f265-dd47-455b-9569-78a79ccba99c">うまくスクレイピング処理するコツ</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#c191f5e9-fcc7-4de7-a861-d050de7f4484">画像ダウンロード</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#784fb41a-b2f2-418f-b7e7-8f7e0cb1fef4">Selenium</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#feb12433-584b-4743-ab88-d7f78141bdd9">サンプルプログラムの実行</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#388bc028-0976-4ad4-95c7-1cf9b5fec67c">ドライバーの配置場所</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#435fc7a8-c63c-40c0-87d4-3ecacbb39b44">dummy_sleep</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1f7c6d75-660d-4deb-b58c-e02d3e0e47b4">find_element_by_css_selector</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#834f5339-b57f-4c4d-a15f-a9bcb95ecb75">find_element_by_xpath</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#465ffe93-b091-4e15-917e-9aba479c2299">リンククリック</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2d8908ff-091e-48e4-80ed-7fb1831a10da">自動ログイン</a></div></nav><p id="4c374247-23fa-4d4a-bf97-c3cca5f669f5" class="">
+</p><p id="ecc9d398-d982-4aa1-b612-6108dc5f77f3" class="">
+</p><p id="76243471-1bfe-4747-a619-9432f4ca1627" class="">
+</p><hr id="ce3bd1cc-3f93-4d54-8f19-207d142c09ed"/><h2 id="564ccaee-1e77-49c0-a5c6-9c9f27f0001d" class="">Python環境構築まとめ（How to build various Python envrionments）</h2><p id="a60851c2-9047-40fc-9089-e6126a72bde3" class=""><a href="https://www.notion.so/Python-ClassNote-f6f0da656bfd4e66b947bd1c391a57d8?pvs=21">https://www.notion.so/Python-ClassNote-f6f0da656bfd4e66b947bd1c391a57d8</a></p><figure id="776f52c9-dc01-4829-b324-4a626efc8848" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled.png"><img style="width:1394px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled.png"/></a></figure><p id="78e90b49-305f-4715-8ef2-3fb1e7046aaa" class="">
+</p><h2 id="ece00899-47f7-4695-9bf4-ef8962fd087f" class="">イントロダクション</h2><div id="86fa0170-2b76-4882-916b-50cf7750af05" class="column-list"><div id="900c8833-be7a-4f13-bb15-daadc354389b" style="width:50%" class="column"><figure id="8b299548-4736-46c4-9fe8-55522a3415c5" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%201.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%201.png"/></a></figure></div><div id="02561803-1a23-4c43-8b60-17f5c5e04383" style="width:50%" class="column"><figure id="cae842b9-bb69-4806-8c99-8c4ef3cea173" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%202.png"><img style="width:2164px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%202.png"/></a></figure></div></div><div id="e089cb03-b3ec-49b8-9a7b-591a7fc53bcd" class="column-list"><div id="c38499a7-c49a-4d87-9bd9-1867caa4a0ab" style="width:50%" class="column"><figure id="7c669ad5-bc78-4530-ab9f-a596c93e2ba9" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%203.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%203.png"/></a></figure></div><div id="cb222a2e-6557-4bb5-8337-d721a1448f95" style="width:50%" class="column"><figure id="d2ee374b-673b-4d03-a873-bd1b2a6e7e78" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%204.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%204.png"/></a></figure></div></div><p id="b99371ca-f64f-4c19-91a2-640dee4fc9a5" class="">
+</p><hr id="e487d4a6-4592-424d-9704-fa706eb706d6"/><h2 id="f6ff6d7e-ac77-489d-992d-21db788ebf19" class="">HTML基礎</h2><hr id="f7622a9c-f84b-4b35-a7c4-14338465e1e2"/><figure id="6b8a80df-27de-4ef9-8ca0-f711cfe8f04d" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%205.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%205.png"/></a></figure><p id="4c3f30bf-2d20-4cdb-ab26-11f97846cd2e" class="">
+</p><h3 id="aa704710-bdfb-4dfe-8856-9bc6efa47525" class="">classとid</h3><figure id="64c874a5-44b0-4436-9c75-170a08abea3c" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%206.png"><img style="width:2166px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%206.png"/></a></figure><pre id="fc8502a6-fcf3-4066-bef7-c85c4b33b006" class="code"><code>&lt;html&gt;
+	&lt;body&gt;
+		&lt;p&gt;Some Man
+			&lt;b&gt;bad
+				&lt;i&gt;Bob&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+		&lt;p&gt;Some Woman
+			&lt;b&gt;good
+				&lt;i&gt;Ann&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="00a25881-3960-4512-917b-791bac114d77" class=""><mark class="highlight-gray">属性のないHTMLタグ</mark></p><p id="7ea8b935-51da-4b28-80b1-7f62f218fe97" class="">
+</p><pre id="8d4536e6-eaf8-4a88-b105-de51d2eaf984" class="code"><code>&lt;html&gt;
+	&lt;body&gt;
+		&lt;p class=&#x27;p_element&#x27;&gt;Some Man
+			&lt;b class=&#x27;b_element shiny&#x27;&gt;bad
+				&lt;i id=&#x27;bob_name&#x27;&gt;Bob&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+		&lt;p class=&#x27;p_element&#x27;&gt;Some Woman
+			&lt;b class=&#x27;b_element shiny&#x27;&gt;good
+				&lt;i id=&#x27;ann_name&#x27;&gt;Ann&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="891bc61e-c3b2-4ff3-8a16-0daee141742f" class=""><mark class="highlight-gray">classとid属性のあるHTMLタグ</mark></p><p id="5e04aaf4-2624-446e-8322-dd04b150c084" class="">
+</p><p id="675e7c3f-c6d2-4ceb-8ba9-3dad7cb121e0" class="">
+</p><pre id="e29dc67d-efaf-46da-82fc-7784ba2c4dad" class="code"><code>.p_element {
+	display: inline-block;
+	padding: 0.5em 1em;
+	text-decoration: none;
+	background: #668ad8;
+	color: #FFF;
+	border-bottom: solid 4px #627295;
+	border-radius: 3px;
+}
+
+#ann_name {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #f7f7f7;
+  border-left: solid 6px #ff7c5c;
+  color: #ff7c5c;
+  font-weight: bold;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+}</code></pre><p id="6b920fa2-89ba-40fe-8f52-7ec461d5a074" class="">
+</p><h3 id="46df333b-2bd5-4000-8da2-a82aee530bfc" class="">HTMLタグ（要素）</h3><figure id="d79aa552-0cf1-4a18-95e5-d53d4782ab88" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%207.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%207.png"/></a></figure><p id="bbe5b76b-e194-4064-92a7-f267bd9551b8" class="">
+</p><hr id="cbba41fa-e5e0-4ee9-8b22-648c178e0469"/><h2 id="dc7768f0-09dd-4693-a964-974dfcbf9900" class="">BeautifulSoup</h2><div id="5104f181-a6ef-4650-8654-87492fdcfd5f" class="column-list"><div id="ae49a992-b28c-4398-9476-2c78117d590c" style="width:50%" class="column"><figure id="6467176d-ed92-4f95-a5bc-e7ebb1971e05" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%208.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%208.png"/></a></figure></div><div id="3cd5c12e-8db3-4935-8b75-457c57aa65b2" style="width:50%" class="column"><figure id="956caf4c-a9f8-47cb-8a43-683f80e092fb" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%209.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%209.png"/></a></figure></div></div><p id="d8b94d2e-e747-4451-8112-dc8f1794a974" class="">
+</p><hr id="ee98b6a7-eef3-407e-850b-d5088328ee31"/><h3 id="28ca539a-893e-4d03-9778-eac4f6e29350" class="">BeautifulSoup ローカルファイルのParse</h3><figure id="e7cd123a-3228-46c3-b657-c259a1bbe8d6" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2010.png"><img style="width:2164px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2010.png"/></a></figure><pre id="cdadc305-86c9-43b8-bb7c-fcee0d47b840" class="code"><code>&lt;p&gt;Some&lt;b&gt;bad&lt;i&gt;HTML</code></pre><p id="7426566a-fb17-4d0d-885b-374868508d8a" class=""><mark class="highlight-gray">sample.html</mark></p><p id="e8385254-a2fe-4b6d-9180-a0a7a93a49f0" class="">
+</p><pre id="f0962107-6fff-4635-b288-cf151d3147c5" class="code"><code>import bs4
+
+soup = bs4.BeautifulSoup(open(&#x27;sample.html&#x27;), &#x27;lxml&#x27;)
+
+print(soup.prettify())
+print(soup.find(text=&quot;bad&quot;))
+print(soup.i)</code></pre><p id="a6aea1b8-a492-4481-a8e3-c4438d7bf798" class="">
+</p><p id="e4f37134-1978-4adb-afc5-4ebf8af98ded" class="">
+</p><hr id="3da4903d-ecbd-4be6-96b7-dc99ba95119a"/><h3 id="d7f8ebc9-8f35-433b-b620-6797aa55bbcc" class="">BeautifulSoup ウェブ上のHTMLのParse</h3><figure id="bbb7b036-f674-4ab0-8b8a-914d6792e5af" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2011.png"><img style="width:2166px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2011.png"/></a></figure><pre id="b7631374-6d1f-41f9-9503-1bf42c5b6777" class="code"><code>import requests
+from bs4 import BeautifulSoup
+
+url = &quot;http://kondou.com/BS4/&quot;
+req = requests.get(url)
+
+print(req.text)
+
+soup = BeautifulSoup(req.text, &#x27;lxml&#x27;)
+
+print(soup.prettify())
+print(soup.div)
+print(soup.h1)</code></pre><p id="9ad7dd09-c067-484e-8c76-6e15da62b54e" class="">
+</p><p id="f205ba56-b165-48e0-a856-07a5fcb01f47" class="">
+</p><hr id="6381499a-2b70-48b8-b47d-45f0f81f8567"/><h3 id="0c6254d3-f093-42a5-9c3c-1c2682a14400" class="">様々な要素の選定の方法</h3><div id="0d557da8-dbbd-4351-952e-dd45e9f2a171" class="column-list"><div id="b966875f-8d0e-49a7-9dd6-3a1e666957fe" style="width:50%" class="column"><figure id="4c498eee-39de-4c54-88d3-58bf85738ce4" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2012.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2012.png"/></a></figure></div><div id="85f4c730-719d-442d-89b9-f1524502c249" style="width:50%" class="column"><figure id="f323f15c-e510-46cb-b722-a2ef1f215283" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2013.png"><img style="width:2164px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2013.png"/></a></figure></div></div><figure id="96bed2fb-c06c-4bb7-b07d-a41baf3f2f4f" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2014.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2014.png"/></a></figure><pre id="184c650f-f404-4f56-9fd5-0858fdb5e763" class="code"><code># 要素名を指定する.
+soup.find(&#x27;p&#x27;)
+soup.select(&#x27;p&#x27;)
+
+# classを指定する
+soup.find(class_=&#x27;p_element&#x27;)
+soup.select(&#x27;.p_element&#x27;)
+
+# 複数のclassを指定する
+soup.find(class_=&#x27;p_element shiny&#x27;)
+soup.select(&#x27;[class=&quot;p_element shiny&quot;]&#x27;)
+
+# 要素名とclassを指定する
+soup.find(&#x27;p&#x27;, class_=&#x27;p_element&#x27;)
+soup.select(&#x27;p.p_element&#x27;)
+
+# idを指定する
+soup.find(id=&#x27;bob_name&#x27;)
+soup.select(&#x27;#bob_name&#x27;)
+
+# 複数のidを指定する
+soup.find(id=[&#x27;bob_name&#x27;, &#x27;ann_name&#x27;])
+soup.select(&#x27;#bob_name, #ann_name&#x27;)</code></pre><p id="866fb339-cb80-4075-abba-7a8b39a36860" class="">
+</p><pre id="23619430-6128-46e0-a98d-2df54b4badae" class="code"><code>&lt;html&gt;
+	&lt;body&gt;
+		&lt;p class=&#x27;p_element&#x27;&gt;Some Man
+			&lt;b class=&#x27;b_element shiny&#x27;&gt;bad
+				&lt;i id=&#x27;bob_name&#x27;&gt;Bob&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+		&lt;p class=&#x27;p_element&#x27;&gt;Some Woman
+			&lt;b class=&#x27;b_element shiny&#x27;&gt;good
+				&lt;i id=&#x27;ann_name&#x27;&gt;Ann&lt;/i&gt;
+			&lt;/b&gt;
+		&lt;/p&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="a3d7131e-40cb-45f3-87fe-c51c9de06276" class=""><mark class="highlight-gray">サンプル.html</mark></p><p id="63d8c2bf-9325-400e-b146-6f8529817193" class="">
+</p><p id="4dc68a4a-ddb4-4f78-8a7c-7c1a8806af18" class="">
+</p><hr id="25cd96fe-2823-491b-a191-a0166af2a570"/><h3 id="4153ad3e-67b9-43c4-b7ac-811f5ad78e8b" class="">属性値と要素テキストの取得</h3><pre id="ee8cc061-6254-4f37-847f-0a49a1bebf71" class="code"><code># 属性値の取得
+ret = soup.find(&#x27;p&#x27;)
+print(ret[&#x27;class&#x27;])
+print(ret.get(&#x27;class&#x27;))
+print(soup.find(&#x27;p&#x27;)[&#x27;class&#x27;])
+
+# 要素テキストの取得
+print(soup.p.string)
+print(soup.p.strings)
+print(soup.p.text)
+
+print(soup.i.string)
+print(soup.i.strings)
+print(soup.i.text)</code></pre><p id="6d54a7ed-5f35-4ee1-8763-e0901df0fb68" class="">
+</p><p id="afe125c0-530e-4258-b738-4bf28899df9d" class="">
+</p><hr id="aa332a4e-ed62-4c4b-89b7-7de53f5f5c74"/><h3 id="4f30f265-dd47-455b-9569-78a79ccba99c" class="">うまくスクレイピング処理するコツ</h3><figure id="0c29eff0-0408-41ca-811b-ee29ebae4c66" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2015.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2015.png"/></a></figure><pre id="5e24bef8-b8c6-4be8-ac91-9ddc74da338a" class="code"><code># オブジェクトを細切れにする
+ret = soup.find(&#x27;p&#x27;)
+
+# prettifyメソッドで中身を確認
+print(soup.prettify())
+print(ret.prettify())
+
+# テキストに出力
+with open(&#x27;ret.txt&#x27;, mode=&#x27;w&#x27;) as f:
+    f.write(soup.prettify())</code></pre><p id="6de36669-40c1-43e8-848d-4c8a2eea2b55" class="">
+</p><p id="922e634e-bd77-4dd0-9e77-dcbf2cc6eb24" class="">
+</p><hr id="4fb0217a-5552-46da-baf3-844bea34527f"/><h3 id="c191f5e9-fcc7-4de7-a861-d050de7f4484" class="">画像ダウンロード</h3><figure id="06fdfa34-0c7c-42df-b03e-1e9077114bd2" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2016.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2016.png"/></a></figure><pre id="48b67c9a-5cc2-4754-8d3e-f923ee77e657" class="code"><code>import requests
+import bs4
+
+url = &#x27;https://www.udemy.com/&#x27;
+soup = BeautifulSoup(requests.get(url).content, &#x27;lxml&#x27;)
+image_list = []
+
+for img in soup.find_all(&#x27;img&#x27;):
+    print(img.get(&quot;src&quot;))
+    if &#x27;jpg&#x27; in img.get(&quot;src&quot;):
+        image_list.append(img.get(&quot;src&quot;))
+
+for image in image_list:
+    req = requests.get(image)
+    file_name = image.split(&#x27;/&#x27;)[-1]
+    with open(&#x27;./img/&#x27; + file_name, &#x27;wb&#x27;) as f:
+        f.write(req.content)</code></pre><p id="7b259491-7b59-4559-999d-f623d5fe62e7" class="">
+</p><p id="c9bca267-b2f6-4b0c-9026-11af0b77687d" class="">
+</p><hr id="2a8489a6-cb45-4e52-9b6c-094691660f95"/><h2 id="784fb41a-b2f2-418f-b7e7-8f7e0cb1fef4" class="">Selenium</h2><div id="74f650e9-b4b6-4798-90aa-d6048ccf52be" class="column-list"><div id="b13f9a60-39f1-4db6-be76-69cad22ed3b3" style="width:50%" class="column"><figure id="229cbc55-c1c7-46b9-a7f3-a156d12e6082" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2017.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2017.png"/></a></figure></div><div id="cef94abb-3c64-41d1-8cb2-a2208990e610" style="width:50%" class="column"><figure id="bdca9aa1-d091-4798-b267-0f778a86b9b2" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2018.png"><img style="width:2166px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2018.png"/></a></figure></div></div><hr id="f12e819b-5269-4239-925d-090efa831e7f"/><h3 id="feb12433-584b-4743-ab88-d7f78141bdd9" class="">サンプルプログラムの実行</h3><figure id="8638df84-8814-4e1d-a103-8d6e0557576c" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2019.png"><img style="width:2166px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2019.png"/></a></figure><pre id="f1421f80-2984-41cf-8dfd-b3c335302ad5" class="code"><code>from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+browser = webdriver.Chrome()
+
+browser.get(&#x27;https://www.yahoo.com&#x27;)
+assert(&#x27;Yahoo&#x27; in browser.title)
+
+elem = browser.find_element_by_name(&#x27;p&#x27;) # Find the search box
+elem.send_keys(&#x27;seleniumhq&#x27; + Keys.RETURN)
+
+browser.quit()</code></pre><p id="dd5c4797-01a4-4ddb-95fd-7a88b94354f6" class="">
+</p><p id="b3fe2175-c0a7-4d40-8e4a-4de2055bad65" class="">
+</p><hr id="6759ec11-145b-4ba4-ae67-749fc934fb49"/><h3 id="388bc028-0976-4ad4-95c7-1cf9b5fec67c" class="">ドライバーの配置場所</h3><div id="714a4a4f-a20e-4634-9609-aed1919cf395" class="column-list"><div id="81f0f669-faf6-4c03-8b67-5a292413982d" style="width:50%" class="column"><figure id="d82deb72-28d2-4dba-ae6d-b33c9abed6dc" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2020.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2020.png"/></a></figure></div><div id="7485017d-0f51-4676-b499-c480ace3bbda" style="width:50%" class="column"><figure id="f57badbc-9a08-42af-ab2d-c5d6704c97ff" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2021.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2021.png"/></a></figure></div></div><pre id="6f4fe89a-6962-4e87-8dce-b197a2d01706" class="code"><code>browser = webdriver.Chrome()
+
+browser = webdriver.Chrome(executable_path=&#x27;./chromedriver&#x27;)</code></pre><p id="dd42515c-464a-4cff-a468-b0148678d750" class="">
+</p><p id="bb1cc268-b1c4-4337-9b10-61115babc95d" class="">
+</p><hr id="73c11ea8-cf2f-4873-90b0-16f858df476f"/><h3 id="435fc7a8-c63c-40c0-87d4-3ecacbb39b44" class="">dummy_sleep</h3><figure id="a4b209bb-31a8-4aac-8c32-ec1b74edab10" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2022.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2022.png"/></a></figure><pre id="f3946825-251e-4668-ace0-a2ce498b19df" class="code"><code>from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+def dummy_sleep(sec, browser):
+    wait = WebDriverWait(browser, 1)
+
+    for i in range(sec):
+        try:
+            xpath = &#x27;dummy&#x27;
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        except:
+            pass</code></pre><p id="2b0c6139-9e9c-4f9d-9549-9d4faa76a244" class="">
+</p><hr id="bd06373b-cbb5-431e-a4ea-2a2779026650"/><h3 id="1f7c6d75-660d-4deb-b58c-e02d3e0e47b4" class="">find_element_by_css_selector</h3><figure id="fd90d66c-d265-4e96-ad61-915eb7ee7cd0" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2023.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2023.png"/></a></figure><pre id="5be9e005-bab8-4eda-b911-00f01c978967" class="code"><code>from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+def dummy_sleep(sec, browser):
+    wait = WebDriverWait(browser, 1)
+
+    for i in range(sec):
+        try:
+            xpath = &#x27;dummy&#x27;
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        except:
+            pass
+
+
+def main():
+    browser = webdriver.Chrome(executable_path=&#x27;./chromedriver&#x27;)
+
+    browser.get(&#x27;https://www.yahoo.com&#x27;)
+
+    selector = &#x27;#ybar-sbq&#x27;
+    elem = browser.find_element_by_css_selector(selector)
+    elem.send_keys(&#x27;seleniumhq&#x27; + Keys.RETURN)
+
+    dummy_sleep(10, browser)
+
+    browser.close()
+    browser.quit()
+
+
+if (__name__ == &#x27;__main__&#x27;):
+    main()</code></pre><p id="fa85d8b7-288b-487d-b92d-94ffb159f73b" class="">
+</p><p id="58a8bb77-1a9c-46ca-aff4-8a40bad5c2dd" class="">
+</p><hr id="163c8df5-37ec-400b-9ccb-82fad568e8d8"/><h3 id="834f5339-b57f-4c4d-a15f-a9bcb95ecb75" class="">find_element_by_xpath</h3><figure id="194811a5-0c04-4010-b2be-7a45fe6c68b1" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2024.png"><img style="width:2170px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2024.png"/></a></figure><pre id="1fb2f112-d64e-4f77-8f54-1bfac00922f6" class="code"><code>from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+def dummy_sleep(sec, browser):
+    wait = WebDriverWait(browser, 1)
+
+    for i in range(sec):
+        try:
+            xpath = &#x27;dummy&#x27;
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        except:
+            pass
+
+
+def main():
+    browser = webdriver.Chrome(executable_path=&#x27;./chromedriver&#x27;)
+
+    browser.get(&#x27;https://www.yahoo.com&#x27;)
+
+    xpath = &#x27;//*[@id=&quot;header-search-input&quot;]&#x27;
+    elem = browser.find_element_by_xpath(xpath)
+    elem.send_keys(&#x27;seleniumhq&#x27; + Keys.RETURN)
+
+    dummy_sleep(10, browser)
+
+    browser.close()
+    browser.quit()
+
+
+if (__name__ == &#x27;__main__&#x27;):
+    main()</code></pre><p id="25cc8f26-2a5a-4c5b-bc49-0f1766973e2e" class="">
+</p><p id="0d95e8c2-0647-4ffe-a24b-33f5e8a02b94" class="">
+</p><hr id="931372b5-2f5a-43db-99af-a7008abc695f"/><h3 id="465ffe93-b091-4e15-917e-9aba479c2299" class="">リンククリック</h3><figure id="7861ff8f-821a-4dd6-a6c6-3835d707d092" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2025.png"><img style="width:2166px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2025.png"/></a></figure><pre id="c9ec6f09-5dcd-4dff-abb4-8ba8046f13c4" class="code"><code>from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+def dummy_sleep(sec, browser):
+    wait = WebDriverWait(browser, 1)
+
+    for i in range(sec):
+        try:
+            xpath = &#x27;dummy&#x27;
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        except:
+            pass
+
+
+def main():
+    browser = webdriver.Chrome(executable_path=&#x27;./chromedriver&#x27;)
+
+    browser.get(&#x27;https://www.yahoo.com&#x27;)
+
+    xpath = &#x27;//*[@id=&quot;header-nav-bar&quot;]/li[3]/a&#x27;
+    elem = browser.find_element_by_xpath(xpath)
+    elem.click()
+
+    dummy_sleep(10, browser)
+
+    browser.close()
+    browser.quit()
+
+
+if (__name__ == &#x27;__main__&#x27;):
+    main()</code></pre><p id="a6b7ca03-1ce3-4932-8482-aa6c0a389ca5" class="">
+</p><p id="e997f557-7c00-4d58-a4dc-2edba5366a4a" class="">
+</p><hr id="c69c22b5-16bc-41ec-b011-bd38b1b49d89"/><h3 id="2d8908ff-091e-48e4-80ed-7fb1831a10da" class="">自動ログイン</h3><div id="429e67c1-5445-4cd1-a3e7-46814b0640f6" class="column-list"><div id="e0da95d3-15a5-452a-b33e-c01deb1ca372" style="width:50%" class="column"><figure id="fe0bd83a-3726-480d-a323-e2a179dd9ee5" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2026.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2026.png"/></a></figure></div><div id="1dad1e44-3314-4c7c-81a9-abe5b911b952" style="width:50%" class="column"><figure id="bc527dc6-4344-4945-b414-1e87c0694934" class="image"><a href="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2027.png"><img style="width:2168px" src="Python%E3%82%A6%E3%82%A7%E3%83%95%E3%82%99%E3%82%B9%E3%82%AF%E3%83%AC%E3%82%A4%E3%83%92%E3%82%9A%E3%83%B3%E3%82%AF%E3%82%99%20dce5e1a99fa348878e95c68e570b9749/Untitled%2027.png"/></a></figure></div></div><pre id="c6ee3494-f811-48b6-94eb-c6a8a78494f9" class="code"><code>from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+def dummy_sleep(sec, browser):
+    wait = WebDriverWait(browser, 1)
+
+    for i in range(sec):
+        try:
+            xpath = &#x27;dummy&#x27;
+            wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        except:
+            pass
+
+
+def main():
+    browser = webdriver.Chrome(executable_path=&#x27;./chromedriver&#x27;)
+
+    browser.get(&#x27;https://www.yahoo.com&#x27;)
+
+    # sign in button
+    xpath = &#x27;//*[@id=&quot;header-signin-link&quot;]&#x27;
+    elem = browser.find_element_by_xpath(xpath)
+    elem.click()
+    dummy_sleep(3, browser)
+
+    # user name input
+    xpath = &#x27;//*[@id=&quot;login-username&quot;]&#x27;
+    elem = browser.find_element_by_xpath(xpath)
+    elem.send_keys(&#x27;kikukawa9&#x27; + Keys.RETURN)
+    dummy_sleep(3, browser)
+
+    # password input
+    xpath = &#x27;//*[@id=&quot;login-passwd&quot;]&#x27;
+    elem = browser.find_element_by_xpath(xpath)
+    elem.send_keys(&#x27;***********&#x27; + Keys.RETURN)
+    dummy_sleep(10, browser)
+
+    browser.close()
+    browser.quit()
+
+
+if (__name__ == &#x27;__main__&#x27;):
+    main()</code></pre><p id="3a4a8bb1-dc4d-4d9f-94cb-740ff0c1e01b" class="">
+</p></div></article></body></html>
