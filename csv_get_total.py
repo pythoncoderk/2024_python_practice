@@ -26,7 +26,10 @@ total_p = []
 
 for i in file_paths:
     df = pd.read_csv(i, encoding='shift_jis')
-    df_all = pd.DataFrame(df["USD JPY"])
+    ##############修正箇所#########################
+    df_all_one = pd.DataFrame(df[(df["状態"] == "YES")])
+    df_all = pd.DataFrame(df_all_one["USD JPY"])
+    ##############修正箇所#########################
     df_ans_all = df_all.sum()
     total_all.append(df_ans_all.iloc[-1])
 
